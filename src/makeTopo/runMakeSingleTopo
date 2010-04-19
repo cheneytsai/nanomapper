@@ -1,0 +1,2 @@
+#!/bin/csh
+./Phy NumberOfNodes $num MinDist 225 Seed1 $s1 Seed2 $s2 PlacementControl $p OrientationControl $o InterconnectControl $i PngDump 0 T1Size 150 T1Trans 3 T2Size 150 T2Trans 3

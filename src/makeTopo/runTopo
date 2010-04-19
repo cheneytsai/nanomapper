@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+#
+#
+#
+#
+# runTopo Script to run generate topologies
+#
+echo "enter two numbers"
+read a b
+c= $(($a+$b))
+echo "$a + $b = $c"
+
+
+#./Phy NumberOfNodes 100 MinDist 225 Seed1 5 Seed2 10 PlacementControl 0 #OrientationControl 0 InterconnectControl 0 PngDump 1 T1Size 150 T1Trans 3 #T2Size 150 T2Trans 3
+
+#done

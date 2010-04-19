@@ -1,0 +1,31 @@
+#!/bin/bash
+
+RANDOM=`date '+%s'`
+index=0
+rm ./seedFile
+
+for nodenum in 10 20 40 80 160
+do
+  for placement in 0 1
+  do
+    for orientation in 0 1
+    do
+      for interconnect in 0 1
+      do
+        index=0
+        while [ $index -lt 20 ]
+        do
+          echo $index >> ./seedFile
+          seed1=$[($RANDOM%100)+1]
+          echo $seed1 >> ./seedFile
+          seed2=$[($RANDOM%100)+101]
+          echo $seed2 >> ./seedFile
+          echo >> ./seedFile
+          qsub -cwd -v s1=$seed1,s2=$seed2,num=$nodenum,p=$placement,o=$orientation,i=$interconnect runMakeSingleTopo
+          index=$(($index+1))
+        done
+      done
+    done
+  done
+done
+
