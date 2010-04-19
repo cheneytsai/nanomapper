@@ -11,12 +11,12 @@ import dataStruct.PhysicalNetwork;
  */
 public abstract class AbstractPhysicalMapParser extends AbstractParser
 {
-	protected PhysicalNetwork myPhysicalNetwork;
+	protected PhysicalNetwork myParsedNetwork;
 	
 	public AbstractPhysicalMapParser(Scanner input)
 	{
 		super(input);
-		myPhysicalNetwork = null;
+		myParsedNetwork = null;
 	}
 	
 	@Override
@@ -27,7 +27,7 @@ public abstract class AbstractPhysicalMapParser extends AbstractParser
 	
 	public PhysicalNetwork getPhysicalNetwork()
 	{
-		return myPhysicalNetwork;
+		return myParsedNetwork;
 		
 	}
 	

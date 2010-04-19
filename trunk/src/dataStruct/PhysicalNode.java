@@ -87,10 +87,30 @@ public class PhysicalNode extends Node
 		String stuff = "";
 		for( int i = 0; i < myLinks.size(); i++)
 		{
-			stuff.concat(myLinks.get(i) + " ");
+			if (myLinks.containsKey(i))
+			{
+				System.out.println("asdfasdf");
+				stuff.concat(myLinks.get(i) + " ");
+			}
+			else
+				stuff.concat("x ");
 		}
 		
 		return stuff;
 		
+	}
+	
+	public void printNode()
+	{
+		System.out.print(nodeID + ":: " );
+		for(int i = 0; i < 3; i++) //tentative
+		{
+			System.out.print(i + ": ");
+			if (myLinks.containsKey(i))
+			System.out.print(myLinks.get(i) + " ");
+			else
+			System.out.print(" ");
+		}
+		System.out.println("");
 	}
 }

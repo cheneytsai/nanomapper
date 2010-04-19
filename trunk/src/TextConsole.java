@@ -6,7 +6,9 @@ import java.util.Scanner;
 
 import dataStruct.PhysicalNetwork;
 import dataStruct.PhysicalNode;
+import fitter.GreedyAlgo;
 
+import parser.IscasParser;
 import parser.UnnamedPhysicalMapParser;
 
 
@@ -67,23 +69,51 @@ public class TextConsole
 		}
 		
 		//Parse the graphs
-		
+		//TODO return data from Parser, don't contain it
 		UnnamedPhysicalMapParser myPhysicalParser = new UnnamedPhysicalMapParser(network_In);
+		IscasParser myNetListParser = new IscasParser(netlist_In);
 		
-		PhysicalNetwork myPhysicalNetwork = myPhysicalParser.getParsedNetwork();
+		//Testing only: Print Physical Network
+		printPhysicalNetwork(myPhysicalParser);
+		//printNetListSet(myNetListParser);
+		
+		//Send Data to Algo
+		GreedyAlgo.runFit(myPhysicalParser.getPhysicalNetwork(), myNetListParser.getNodeSet());
+	}
+
+
+	/**
+	 * TESTING METHOD - gives rough idea of reprinting the netlist set
+	 * @param myNetListParser
+	 */
+	private void printNetListSet(IscasParser myNetListParser) 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/**
+	 * TESTING METHOD - gives rough idea of grabbing random nodes and printing them
+	 * @param myPhysicalParser
+	 */
+	private void printPhysicalNetwork(UnnamedPhysicalMapParser myPhysicalParser) 
+	{
+		PhysicalNetwork myPhysicalNetwork = myPhysicalParser.getPhysicalNetwork();
 		PhysicalNode testNode;
 		
 		for (int i = 0; i < 10; i++)
 		{
 			testNode = myPhysicalNetwork.getRandomNode();
-			System.out.println(testNode.getID());
-			System.out.println(testNode.getLinks());
+			testNode.printNode();
 		}
-		
 	}
 	
-	
-	
+	/**
+	 * Prompt User for Input
+	 * @param message
+	 * @return
+	 */
 	private String promptUser(String message)
 	{
 		Scanner in = new Scanner(new InputStreamReader(System.in));
