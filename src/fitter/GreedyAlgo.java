@@ -1,5 +1,9 @@
 package fitter;
 
+import dataStruct.MappedNetwork;
+import dataStruct.NetSet;
+import dataStruct.PhysicalNetwork;
+
 /**
  * Implements a fitter following a greedy Algorithm
  * 
@@ -8,16 +12,19 @@ package fitter;
  */
 public class GreedyAlgo 
 {
-	public GreedyAlgo()
+	static MappedNetwork myMappedNetwork;
+	
+	public static MappedNetwork runFit(PhysicalNetwork aPhysicalNetwork, NetSet aNetSet)
 	{
-		//Create a MappedNetwork contains NetSet and PhysicalNetwork
-		//Map of NetNode onto PhysicalNode
+		myMappedNetwork = new MappedNetwork(aNetSet, aPhysicalNetwork);
 		
+		runAlgo();
 		
-		//Call PhysicalNetwork.getRandomNode()
-		
-		
-		
+		return myMappedNetwork;
 	}
 	
+	private static void runAlgo()
+	{
+		//TODO Code the Algo
+	}
 }

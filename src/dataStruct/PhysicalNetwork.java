@@ -31,7 +31,7 @@ public class PhysicalNetwork
 	 */
 	public int addNode(PhysicalNode rushee)
 	{
-		//TODO Add check for link conflicts
+		//TODO Add check for link conflictsprintPhysicalNetwork(myPhysicalParser);
 		if(myNodes.containsValue(rushee.getID()) || myNodes.size() >= nodeLimit)
 		{
 			return -1;			
@@ -51,10 +51,13 @@ public class PhysicalNetwork
 	public PhysicalNode getRandomNode()
 	{
 		if (myNodes.isEmpty())
+		{
+			System.out.println("Warning: Physical Network is empty!");
 			return null;
+		}
 		else 
 		{
-			Integer randID = (int)(Math.random()*(myNodes.size()+1));
+			Integer randID = (int)(Math.random()*(myNodes.size()));
 			return myNodes.get(randID);
 		}
 		

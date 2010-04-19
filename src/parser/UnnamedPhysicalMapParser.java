@@ -1,7 +1,6 @@
 package parser;
 
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 import dataStruct.PhysicalNetwork;
 import dataStruct.PhysicalNode;
@@ -12,11 +11,8 @@ import dataStruct.PhysicalNode;
  * 
  * @author Cheney Tsai
  */
-public class UnnamedPhysicalMapParser extends AbstractParser
+public class UnnamedPhysicalMapParser extends AbstractPhysicalMapParser
 {
-	//Bad.get rid of later
-	private PhysicalNetwork myParsedNetwork;
-	
 	//TODO make parser standalone
 	public UnnamedPhysicalMapParser(Scanner input)
 	{
@@ -64,7 +60,7 @@ public class UnnamedPhysicalMapParser extends AbstractParser
 	}
 	
 	/**
-	 * Something that recursively makes links
+	 * NOTUSED Something that recursively makes links
 	 * @param input
 	 * @param token
 	 * @param thisNode
@@ -83,14 +79,6 @@ public class UnnamedPhysicalMapParser extends AbstractParser
 									Integer.parseInt(newToken.split(".")[0]));
 		}
 	}
-	/**
-	 * Gets the physical network that parser parsed
-	 * @return
-	 */
-	public PhysicalNetwork getParsedNetwork()
-	{
-		return myParsedNetwork;
-	}
-	
+
 	
 }
