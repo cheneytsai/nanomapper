@@ -1,0 +1,108 @@
+The following is a template of the command needed to run the network generator.
+
+./Phy NumberOfNodes $num MinDist 225 Seed1 $s1 Seed2 $s2 PlacementControl 0/1 OrientationControl 0/1 InterconnectControl 0/1 PngDump 0/1 T1Size 150 T1Trans 3 T2Size 150 T2Trans 3
+
+NumberOfNodes is the total number of nodes in the network.
+MinDist is the minimum distance between the center points of any two nodes in the network.
+Seed1 and Seed2 are random seeds used for the three types of controls.
+For PlacementControl/OrientationControl/InterconnectControl, if 1 is used, it means that we have the corresponding type of control.
+For PngDump, if 1 is used, it means that the simulator will generate a graph for the network.
+We can have two different node sizes in the network, indicated by T1Size and T2Size (side lengths of two different types of nodes).
+T1 and T2 can also have different number of transceivers, indicated by T1Trans and T2Trans.
+
+=======================================================================
+
+This you run the program by /.Phy followed by any number of these options
+ 
+  odb.reg_int("NumberOfNodes", "Number of Nodes in the Network",&NumberOfNodes, 10000);
+  odb.reg_uint("AreaSize","Size of Area (length of side only)",&GridRowPoints,10000);
+  odb.reg_int("Seed1","Random Seed 1",&Seed1,0);
+  odb.reg_int("Seed2","Random Seed 2",&Seed2,0);
+  odb.reg_int("PlacementControl","Do we have control over node placement ? (0=No, 1=Yes)",&PControl,0);
+  odb.reg_int("OrientationControl","Do we have control over node orientation ? (0=No, 1=Yes)",&OControl,0);
+  odb.reg_int("InterconnectControl","Do we have control over Interconnect Growth ? (0=No, 1=Yes)",&IControl,0);
+  odb.reg_int("MinDist","Minimum Distance between Nodes",&Distance,100);
+  odb.reg_double("DecayRate","Decay Growth ?",&DecayGrowth,0.0);
+  odb.reg_int("PngDump","Dump PNG Files at end of growth ?",&PNGDump,0);
+  odb.reg_int("T1Size", "Size of type one node", &T1Size, 150);
+  odb.reg_int("T1Trans", "Number of type one  trans", &T1Trans, 4);
+  odb.reg_int("T2Size", "Size of type two node", &T2Size, 150);
+  odb.reg_int("T2Trans", "Number of type two trans", &T2Trans, 4);
+
+=============================================================
+An example of generating random topologies is below:
+    ./Phy NumberOfNodes $num MinDist $s1 Seed1 $seed Seed2 $seed T1Size $s1 T2Size $s1 T1Trans $t1 T2Trans $t1 PngDump 1
+
+===========================================================
+To make a system with only 1 type of node, then make make the two the same...
+
+============================================================
+To change how the nodes are placed (which type gets placed when):
+Edit the following code in main.cc in PhysicalModel.cc
+  for(int i = 0; i<NumberOfNodes; i++)
+    {
+      if(i<NumberOfNodes/2)
+        NodeList[i]=new NodeA(T1Size, T1Trans);
+      else
+        NodeList[i]=new Node(T2Size, T2Trans);
+    }
+Node that the subclasses aren't really necessary...
+
+============================================================
+To create another (more than 2) type of node, subclass Node found in Node.cc, seting the number of trans and size in the constructor.  This can
+actually just be done by modifying the calls to the constructor to nodes itself....this is why my worst grade at Duke was in software egineering
+
+===============================================================
+png dump is what makes the pictures...
+
+==============================================================
+Topology outputs:
+
+Non-Topo File
+(see Src/PhysicalModel.cc, lines #500-509)...(more below)
+
+900:10000:150:0.000000:3.205556:3.866667:489.000000:2.189781::0:899::701:1::
+(# of Nodes):(# points in a grid row):(Min Dist):(a):(b):(c):(d):(e)::(f)::(g)::
+
+a->Decay Rate, set to 0
+b->Links Per Node (3.20...)
+c->Theoretical Max of Links Per node (3.8666...)
+d->Loops (# of Nodes with at least one link that loops back to the same node)
+e->Nodes Per Link (Total # of Nodes / Total # of links)
+
+Now, the things separated by a '::' are sets of connected nodes
+f-> 0:899 (Group # 0, 899 Nodes in group)
+g-> 701:1 (Group #701, 1 Node in group)
+
+
+The groups are typically named after the first node that goes into that group (#701 in this case)
+
+Will decode the topology file in my next email
+
+-jaidev
+
+===================================================================
+Topo File: in /Topology
+(See functions Analyze() and PrintTrack())
+
+Ah, this one is actually simpler. The format is:
+
+(Current Node#):: (Current Transceiver #): (Node.Transceiver List)
+(Current Transceiver #): (Node.Transceiver List)....
+
+
+So, the line below decodes to:
+> 896:: 0: 192.1 1: 656.1 382.1 491.1 2: 35.0 884.2 562.0 882.3 884.0
+> 753.1 47.1 755.2 216.0 216.3 755.1 3: 296.1 192.0 209.0 192.3 141.1
+> 141.3 296.3 141.0
+
+For Node 896
+Transceiver 0 is connected to (Node 192, Trans 1)
+Transceiver 1 is connected to (Node 656, Trans 1 ; Node 382 Trans 1;
+Node 491 Trans 1)
+Transceiver 2 is connected to (Node 35, Trans 0 ; Node 884 Trans 2 and so on)
+Transceiver 3 is connected to (Node 296, Trans 1; Node 192 Trans 0 and so on)
+
+Helps?
+
+-jaidev 
