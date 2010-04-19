@@ -1,0 +1,74 @@
+Use:Randomly Placed, Randomly routed Nodes (Limited, Random Grid)
+Circuit Map -> Self-assembled Network of Nodes
+
+
+Compare: 
+Circuit Map to FPGA (Physical Design)
+Partioning->Placement->Routing
+
+1) Randomly Connect everything
+
+--Placement (NP-Complete)--
+In->Netlist of logic blocks + Interconnections
+Out->(x,y) Coordinates (with minimization)
+
+Techniques
+Partitioning-Based
+	Decomp complex system ->Smaller system
+	Recursively apply min-cut partioning
+	cutsize: # of nets not contained in 1 side of partition
+	Fiduccia-Mattheyes Algo
+		Constrain area
+		Alphabatize logic component/gate
+		Group/Break in order
+Simulated-Annealing
+	Improve initial placement by iterative swaps/moves
+	Use Cost Function
+
+Quadratic
+	Use squared wire length..and minimize
+Hybrid and Hierarchical
+	See...paper?
+Dominating Placement Algorithm: VPR
+
+Greedy
+1) Parse Net lists
+2) Assume Unit = Gate-Level    1:1 mapping(no need to group)
+4) Order Gates in circuit and Trace
+5) Try to place at each node. Check valid. If invalid, try next node
+6) Iterate for multiple netlists, noting success rate.
+
+Gate-NetList
+Logical Graph ->Physical Network
+
+Meeting
+Difference in graph..fanout
+
+Paper look at "Teramac"
+	- HP wprk, took fpgas defective...connected fpga to create a functioning machine
+
+inputs to gates ..how many
+
+monte carlo, grab random locations. 
+
+
+issues:
+changing behavior of node: pass through
+satisfies impose. 
+algorithm: work on cases
+critical path
+
+greedy: take cirticla path ,,,get rid of riest..maybe get a new critical path
+
+metric:
+total number of nodes // efficieny metric
+critical path
+
+
+
+SOSA Architecutre
+Logical Graph(ISCAS netlist) -> Physical Network (SOSA 
+
+Given a black box, can we map onto it
+
+Rent's Rule
