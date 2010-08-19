@@ -2,8 +2,7 @@ package parser;
 
 import java.util.Scanner;
 
-import dataStruct.NetNode;
-import dataStruct.NetSet;
+import dataStruct.CircuitArch;
 
 
 /**
@@ -11,49 +10,41 @@ import dataStruct.NetSet;
  * 
  * @author Cheney Tsai
  */
-public class IscasParser extends AbstractNetlistParser
+public class IscasParser
 {
-	public IscasParser(Scanner input)
+	private static CircuitArch myCircuitArch;
+	public static CircuitArch parse(Scanner input)
 	{
-		super(input);
-		parse(input);
-	}
-	
-	@Override
-	protected void parse(Scanner input)
-	{
-		//TODO write REALLLLL parser that actually will work better
 		System.out.println("...Getting ready to parse ISCAS netlist format");
-		myNetSet = new NetSet();
-		int currentID = 0;
+		myCircuitArch = new CircuitArch();
+		String currentLine = "";
 		while(input.hasNextLine())
 		{
-			int id = Integer.parseInt(input.next());
-			if(id == currentID+1)			//skipping the lines I don't understand
+			currentLine = input.nextLine();
+			if (currentLine.isEmpty()) { }
+			else if (currentLine.charAt(0) == '#'){ }
+			else if (currentLine.substring(0, 5).equalsIgnoreCase("INPUT"))
 			{
-			String name = input.next();
-			String type = input.next();
-			int fin	= Integer.parseInt(input.next());
-			int fout = Integer.parseInt(input.next());
-			boolean sa0;
-			boolean sa1;
-			if (input.next().equals(">sa0"))
-			sa0 = true;
-			else
-			sa0 = false;
-			if (input.next().equals(">sa1"))
-			sa1 = true;
-			else
-			sa1 = false;
-			
-			NetNode newNode = new NetNode(myNetSet, id, name, type, fin, fout, sa0, sa1);
-			currentID++;
+				myCircuitArch.addEdge(currentLine.substring(currentLine.indexOf('(')+1, currentLine.lastIndexOf(')')),1);  			//Assumes I/O is before Node Declarations
+			}
+			else if (currentLine.substring(0, 6).equalsIgnoreCase("OUTPUT"))
+			{
+				myCircuitArch.addEdge(currentLine.substring(currentLine.indexOf('(')+1, currentLine.lastIndexOf(')')),2);  			//Assumes I/O is before Node Declarations
+			}
+			else if (currentLine.contains(" = "))
+			{
+				myCircuitArch.addNode(currentLine);
 			}
 			else
-			input.nextLine(); //skip line
+			System.out.println("Unknown Syntax in Line: " + currentLine);
+			
 					
 		}
-		System.out.println("...Finised parsing ISCAS netlist format");
+		System.out.println("...Finished parsing ISCAS netlist format");
+
+		myCircuitArch.printNodeLinks(0);
+
+		return myCircuitArch;
 	}
 	
 	
